@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Program
 {
-	private final int DEFAULT_LINK_IDX = 0;
+	private final int DEFAULT_LINK_IDX = 1;
 	private final int MAX_LINKS = 2;
 	
 	private String name;

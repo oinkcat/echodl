@@ -42,11 +42,16 @@ public class MainActivity extends Activity implements ProgramsView
 		progressDialog = new AlertDialog.Builder(this)
 			.setMessage("Please wait....")
 			.setTitle(actionName)
-			.setIcon(android.R.drawable.ic_dialog_info)
 			.create();
 			
 		progressDialog.setCancelable(false);
 		progressDialog.show();
+	}
+
+	@Override
+	public void showDonePercent(int percent)
+	{
+		progressDialog.setMessage(String.format("%d%% done", percent));
 	}
 
 	@Override
@@ -57,15 +62,18 @@ public class MainActivity extends Activity implements ProgramsView
 	}
 
 	@Override
-	public void showError(String errorMessage)
+	public void showMessage(String message)
 	{
-		Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
 	
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+		
+		setTitle(getResources().getString(R.string.app_title));
+		
         setContentView(R.layout.main);
 		
 		progInfoList = findViewById(R.id.progInfoList);

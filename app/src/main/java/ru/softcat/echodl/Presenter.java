@@ -2,6 +2,7 @@ package ru.softcat.echodl;
 import java.util.*;
 import android.content.*;
 import android.net.*;
+import android.os.*;
 
 public class Presenter
 {
@@ -17,7 +18,7 @@ public class Presenter
 	}
 	
 	public void downloadPrograms() {
-		view.showProgress("Downloading programs list...");
+		view.showProgress("Loading program list...");
 		
 		if(programs == null) {
 			ListDownloader downloadTask = new ListDownloader(this);
@@ -28,9 +29,12 @@ public class Presenter
 	}
 	
 	public void programToDownloadSelected(int programIdx) {
-		String audioUrl = programs.get(programIdx).getDefaultLink();
-		Intent urlOpen = new Intent(Intent.ACTION_VIEW, Uri.parse(audioUrl));
-		context.startActivity(urlOpen);
+		view.showProgress("Downloading program...");
+		
+		Program programToDownload = programs.get(programIdx);
+		
+		ProgramAudioDownloader downloader = new ProgramAudioDownloader(this);
+		downloader.execute(new Program[] { programToDownload });
 	}
 	
 	public void gotPrograms(List<Program> programs) {
@@ -39,4 +43,25 @@ public class Presenter
 		view.setProgramList(programs);
 		view.hideProgress();
 	}
+	
+	public void gotProgress(int percent) {
+		view.showDonePercent(percent);
+	}
+	
+	public void programDownloaded(String savedFileName) {
+		view.hideProgress();
+		view.showMessage("Program downloaded!");
+		
+		Uri url = Uri.parse(savedFileName);
+		Intent openIntent = new Intent(Intent.ACTION_VIEW, url);
+		openIntent.setType("audio/mpeg");
+		openIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		context.startActivity(openIntent);
+	}
+	
+	public void downloadFailed() {
+		view.hideProgress();
+		view.showMessage("Program download error!");
+	}
 }
+

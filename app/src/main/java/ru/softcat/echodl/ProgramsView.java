@@ -7,7 +7,9 @@ public interface ProgramsView
 	
 	void showProgress(String actionName);
 	
+	void showDonePercent(int percent);
+	
 	void hideProgress();
 	
-	void showError(String errorMessage);
+	void showMessage(String message);
 }
