@@ -3,6 +3,8 @@ import java.util.*;
 import android.content.*;
 import android.net.*;
 import android.os.*;
+import java.io.File;
+import java.lang.reflect.*;
 
 public class Presenter
 {
@@ -52,11 +54,22 @@ public class Presenter
 		view.hideProgress();
 		view.showMessage("Program downloaded!");
 		
-		Uri url = Uri.parse(savedFileName);
-		Intent openIntent = new Intent(Intent.ACTION_VIEW, url);
-		openIntent.setType("audio/mpeg");
+		applyUrlExposureHack();
+		
+		Intent openIntent = new Intent(Intent.ACTION_VIEW);
+		Uri url = Uri.parse("file://".concat(savedFileName));
+		openIntent.setDataAndType(url, "audio/mp3");
 		openIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		context.startActivity(openIntent);
+	}
+	
+	private void applyUrlExposureHack() {
+		try {
+			Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure"); 
+			m.invoke(null);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void downloadFailed() {

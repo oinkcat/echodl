@@ -26,14 +26,33 @@ public class MainActivity extends Activity implements ProgramsView
 	public boolean onMenuItemSelected(int featureId, MenuItem item)
 	{
 		finishAndRemoveTask();
+		System.exit(0);
 		return true;
 	}
 	
 	@Override
 	public void setProgramList(List<Program> programs)
 	{
-		final int listResId = android.R.layout.simple_list_item_1;
-		progInfoList.setAdapter(new ArrayAdapter(this, listResId, programs));
+		final int listResId = android.R.layout.simple_list_item_2;
+		final LayoutInflater inflater = getLayoutInflater();
+		
+		progInfoList.setAdapter(new ArrayAdapter(this, listResId, programs) {
+			@Override
+			public View getView(int pos, View convertView, ViewGroup parent) {
+				if(convertView == null) {
+					convertView = inflater.inflate(listResId, null);
+				}
+				
+				Program item = (Program)this.getItem(pos);
+				
+				TextView captionView = convertView.findViewById(android.R.id.text1);
+				captionView.setText(item.getName());
+				TextView detailView = convertView.findViewById(android.R.id.text2);
+				detailView.setText(item.getDetails());
+				
+				return convertView;
+			}
+		});
 	}
 
 	@Override
