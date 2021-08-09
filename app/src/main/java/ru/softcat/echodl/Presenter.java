@@ -12,17 +12,32 @@ public class Presenter
 	
 	private Context context;
 	
-	private static List<Program> programs;
+	private static Presenter instance;
 	
-	public Presenter(ProgramsView view) {
+	private List<Program> programs;
+
+	public static Presenter getInstance(ProgramsView view) {
+		if(instance == null) {
+			instance = new Presenter(view);
+		} else {
+			instance.updateView(view);
+		}
+
+		return instance;
+	}
+	
+	private void updateView(ProgramsView view) {
+		this.view = view;
+	}
+	
+	private Presenter(ProgramsView view) {
 		this.view = view;
 		this.context = (Context)view;
 	}
 	
 	public void downloadPrograms() {
-		view.showProgress("Loading program list...");
-		
 		if(programs == null) {
+			view.showProgress("Loading program list...");
 			ListDownloader downloadTask = new ListDownloader(this);
 			downloadTask.execute();
 		} else {
@@ -54,22 +69,13 @@ public class Presenter
 		view.hideProgress();
 		view.showMessage("Program downloaded!");
 		
-		applyUrlExposureHack();
+		Utils.applyUrlExposureHack();
 		
 		Intent openIntent = new Intent(Intent.ACTION_VIEW);
 		Uri url = Uri.parse("file://".concat(savedFileName));
 		openIntent.setDataAndType(url, "audio/mp3");
 		openIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		context.startActivity(openIntent);
-	}
-	
-	private void applyUrlExposureHack() {
-		try {
-			Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure"); 
-			m.invoke(null);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void downloadFailed() {

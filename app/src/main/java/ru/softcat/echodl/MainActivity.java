@@ -14,6 +14,8 @@ public class MainActivity extends Activity implements ProgramsView
 	private ListView progInfoList;
 	
 	private AlertDialog progressDialog;
+	
+	private static String currentAction;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -58,9 +60,11 @@ public class MainActivity extends Activity implements ProgramsView
 	@Override
 	public void showProgress(String actionName)
 	{
+		currentAction = actionName;
+		
 		progressDialog = new AlertDialog.Builder(this)
 			.setMessage("Please wait....")
-			.setTitle(actionName)
+			.setTitle(currentAction)
 			.create();
 			
 		progressDialog.setCancelable(false);
@@ -70,12 +74,18 @@ public class MainActivity extends Activity implements ProgramsView
 	@Override
 	public void showDonePercent(int percent)
 	{
+		if(progressDialog == null) {
+			showProgress(currentAction);
+		}
+		
 		progressDialog.setMessage(String.format("%d%% done", percent));
 	}
 
 	@Override
 	public void hideProgress()
 	{
+		if(progressDialog == null) { return; }
+		
 		progressDialog.hide();
 		progressDialog = null;
 	}
@@ -102,7 +112,7 @@ public class MainActivity extends Activity implements ProgramsView
 			}
 		});
 		
-		presenter = new Presenter(this);
+		presenter = Presenter.getInstance(this);
 		presenter.downloadPrograms();
     }
 }
