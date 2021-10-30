@@ -27,17 +27,17 @@ public class ProgramAudioDownloader extends AsyncTask<Program, Integer, String>
 			try(InputStream respStream = conn.getInputStream()) {
 				try(FileOutputStream fos = new FileOutputStream(outFilePath)) {
 					byte buffer[] = new byte[BUFFER_SIZE];
-					int respSize = conn.getContentLength();
+					long respSize = conn.getContentLengthLong();
 					
 					int read;
-					int totalRead = 0;
+					long totalRead = 0;
 					
 					while((read = respStream.read(buffer)) > 0) {
 						fos.write(buffer, 0, read);
 						totalRead += read;
 						
-						int pct = totalRead * 100 / respSize;
-						publishProgress(new Integer[] { pct });
+						long pct = totalRead * 100 / respSize;
+						publishProgress(new Integer[] { (int)pct });
 					}
 				}
 			}
