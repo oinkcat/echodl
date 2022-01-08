@@ -100,10 +100,9 @@ public class MainActivity extends Activity implements ProgramsView
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-		
-		setTitle(getResources().getString(R.string.app_title));
-		
+
         setContentView(R.layout.main);
+		setTitle(getResources().getString(R.string.app_title));
 		
 		progInfoList = findViewById(R.id.progInfoList);
 		progInfoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

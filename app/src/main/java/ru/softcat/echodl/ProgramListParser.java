@@ -8,6 +8,8 @@ public class ProgramListParser
 	
 	private List<Program> programs;
 	
+	private HashSet<String> programIds;
+	
 	private String tempProgramTitle;
 	
 	private Program currentProgram;
@@ -17,6 +19,8 @@ public class ProgramListParser
 		Matcher match = regex.matcher(pageContent);
 		
 		programs = new ArrayList<>();
+		programIds = new HashSet<>();
+		
 		while(match.find()) {
 			parseMatchData(match);
 		}
@@ -38,7 +42,11 @@ public class ProgramListParser
 		} else {
 			currentProgram = new Program(tempProgramTitle);
 			currentProgram.addLink(dataValue);
-			programs.add(currentProgram);
+			
+			if(!programIds.contains(dataValue)) {
+				programs.add(currentProgram);
+				programIds.add(dataValue);
+			}
 		}
 	}
 }

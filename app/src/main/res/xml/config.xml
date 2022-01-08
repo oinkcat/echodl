@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<baseUrl>https://echo.msk.ru</baseUrl>
+	<streamUrl>/sound/stream.html</streamUrl>
+</config>

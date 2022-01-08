@@ -33,6 +33,7 @@ public class Presenter
 	private Presenter(ProgramsView view) {
 		this.view = view;
 		this.context = (Context)view;
+		Config.initialize(context);
 	}
 	
 	public void downloadPrograms() {

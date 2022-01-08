@@ -5,13 +5,12 @@ import java.util.function.*;
 
 public class PageDownloader
 {
-	private final String PAGE_URL = "https://echo.msk.ru";
-	
+
 	public String download() {
 		URL echoUrl;
 		
 		try {
-			echoUrl = new URL(PAGE_URL);
+			echoUrl = new URL(Config.getInstance().getBaseUrl());
 		} catch(MalformedURLException e) {
 			return null;
 		}
