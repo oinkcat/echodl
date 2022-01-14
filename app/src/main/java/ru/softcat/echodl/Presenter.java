@@ -3,8 +3,6 @@ import java.util.*;
 import android.content.*;
 import android.net.*;
 import android.os.*;
-import java.io.File;
-import java.lang.reflect.*;
 
 public class Presenter
 {
@@ -44,6 +42,12 @@ public class Presenter
 		} else {
 			gotPrograms(programs);
 		}
+	}
+	
+	public void goToWebSite() {
+		Intent webSiteIntent = new Intent(Intent.ACTION_VIEW);
+		webSiteIntent.setData(Uri.parse(Config.getInstance().getBaseUrl()));
+		context.startActivity(webSiteIntent);
 	}
 	
 	public void programToDownloadSelected(int programIdx) {

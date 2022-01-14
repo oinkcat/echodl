@@ -9,6 +9,12 @@ import android.view.*;
 
 public class MainActivity extends Activity implements ProgramsView
 {
+	private final int MENU_ITEM_ID_RELOAD = 0;
+	
+	private final int MENU_ITEM_ID_EXIT = 1;
+	
+	private final int MENU_ITEM_ID_SITE = 2;
+	
 	private Presenter presenter;
 	
 	private ListView progInfoList;
@@ -20,15 +26,36 @@ public class MainActivity extends Activity implements ProgramsView
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		menu.add("Exit").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		menu.add(Menu.NONE, MENU_ITEM_ID_RELOAD, Menu.NONE, "Reload")
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+		
+		menu.add(Menu.NONE, MENU_ITEM_ID_SITE, Menu.NONE, "Go to Web Site")
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+			
+		menu.add(Menu.NONE, MENU_ITEM_ID_EXIT, Menu.NONE, "Exit")
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+			
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item)
 	{
-		finishAndRemoveTask();
-		System.exit(0);
+		switch(item.getItemId()) {
+			case MENU_ITEM_ID_RELOAD:
+				presenter.downloadPrograms();
+				break;
+			case MENU_ITEM_ID_SITE:
+				presenter.goToWebSite();
+				break;
+			case MENU_ITEM_ID_EXIT:
+				finishAndRemoveTask();
+				System.exit(0);
+				break;
+			default:
+				return false;
+		}
+		
 		return true;
 	}
 	
