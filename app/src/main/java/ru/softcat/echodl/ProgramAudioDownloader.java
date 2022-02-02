@@ -2,6 +2,7 @@ package ru.softcat.echodl;
 import android.os.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class ProgramAudioDownloader extends AsyncTask<Program, Integer, String>
 {

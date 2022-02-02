@@ -138,6 +138,9 @@ public class MainActivity extends Activity implements ProgramsView
 			}
 		});
 		
+		getActionBar().setDisplayShowHomeEnabled(true);
+		getActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher);
+		
 		presenter = Presenter.getInstance(this);
 		presenter.downloadPrograms();
     }
